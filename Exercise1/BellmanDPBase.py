@@ -22,7 +22,7 @@ class BellmanDPSolver(object):
 				prob_next_states = self.MDP.probNextStates(state,a)
 				for state_2 in prob_next_states.keys():
 					s_r_sum = s_r_sum + prob_next_states[state_2] * (self.MDP.getRewards(state,a,state_2)+self.discountRate*self.values[state_2])
-				all_values.append(s_r_sum)
+	    		all_values.append(s_r_sum)
 				
 			self.values[state] = max(all_values)
 			for i in range(len(all_values)):
