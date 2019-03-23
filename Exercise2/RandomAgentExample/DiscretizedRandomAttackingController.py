@@ -23,11 +23,11 @@ if __name__ == '__main__':
 	for episode in range(numEpisodes+1):	
 
 		status = 0
-		observation = hfoEnv.reset()
+		observation = hfoEnv.reset() #恢复到初始状态
 
 		while status==0:
 			act = random.randint(0,4)
-			nextObservation, reward, done, status = hfoEnv.step(hfoEnv.possibleActions[act])
+			nextObservation, reward, done, status = hfoEnv.step(hfoEnv.possibleActions[act]) #将所选动作传递给agent
 			observation = nextObservation
 
 		if status == 5:
