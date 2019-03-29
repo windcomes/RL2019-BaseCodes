@@ -89,7 +89,7 @@ class SARSAAgent(Agent):
 		#raise NotImplementedError
 
 	def setExperience(self, state, action, reward, status, nextState):
-		self.experience.append(state,action,reward,nextState)
+		self.experience.append((state,action,reward,nextState))
 		self.timeSteps = self.timeSteps + 1
 		#raise NotImplementedError
 
