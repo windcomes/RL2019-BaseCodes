@@ -32,8 +32,10 @@ class SARSAAgent(Agent):
 		state_t = tuple(self.currentExperience[0][0])
 		action_t = self.currentExperience[1]
 		reward = self.currentExperience[2]
-		state_next = tuple(self.currentExperience[3][0])
-		
+		if self.currentExperience[3] == "GOAL" or self.currentExperience[3] == "OUT_OF_BOUNDS" or self.currentExperience[3]=="OUT_OF_TIME":
+			state_next = self.currentExperience[3]
+		else:
+			state_next = tuple(self.currentExperience[3][0])
 		# using the same policy which is epsilon-greedy menthod to choose the next action
 		qValue_next = []
 		for action in self.possibleActions:
