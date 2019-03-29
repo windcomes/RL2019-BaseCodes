@@ -54,7 +54,7 @@ class QLearningAgent(Agent):
 		qValueMax = max(qValue)
 		qValueMaxIndexAll = [i for i,j in enumerate(qValue) if j==qValueMax]
 		qValueMaxIndex = random.choice(qValueMaxIndexAll)
-		actionIndexAll = [i for i in range(self.possibleActions)]
+		actionIndexAll = [i for i in range(self.numActions)]
 		actionIndexAll.remove(qValueMaxIndex)
 		proNotMaxA = self.epsilon/self.numActions
 		proisMaxA = 1 - self.epsilon + proNotMaxA

@@ -42,7 +42,7 @@ class SARSAAgent(Agent):
 		qValue_nextMaxIndexAll = [i for i,j in enumerate(qValue_next) if j==qValue_nextMax]
 		qValue_nextMaxIndex = random.choice(qValue_nextMaxIndexAll)
 
-		action_nextIndexAll = [i for i in range(self.possibleActions)]
+		action_nextIndexAll = [i for i in range(self.numActions)]
 		action_nextIndexAll.remove(qValue_nextMaxIndex)
 		proNotMaxA = self.epsilon/self.amountActions
 		proisMaxA = 1 - self.epsilon + proNotMaxA
@@ -67,7 +67,7 @@ class SARSAAgent(Agent):
 		qValueMax = max(qValue)
 		qValueMaxIndexAll = [i for i,j in enumerate(qValue) if j==qValueMax]
 		qValueMaxIndex = random.choice(qValueMaxIndexAll)
-		actionIndexAll = [i for i in range(self.possibleActions)]
+		actionIndexAll = [i for i in range(self.numActions)]
 		actionIndexAll.remove(qValueMaxIndex)
 		proNotMaxA = self.epsilon/self.amountActions
 		proisMaxA = 1 - self.epsilon + proNotMaxA
