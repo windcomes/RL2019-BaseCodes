@@ -36,7 +36,7 @@ class MonteCarloAgent(Agent):
 		for t in range(self.timeStep-1,-1,-1):
 			self.G = self.discountFactor*self.G + self.experience[t][2]
 			state_t = tuple(self.experience[t][0][0])
-			action_t = self.expeirence[t][1]
+			action_t = self.experience[t][1]
 			for tt in range(0,t):
 				if (state_t,action_t)==(tuple(self.experience[tt][0][0]),self.experience[tt][1]):
 					break
@@ -53,7 +53,7 @@ class MonteCarloAgent(Agent):
 		raise NotImplementedError
 
 	def setExperience(self, state, action, reward, status, nextState):
-		self.expeirence.append((state,action,reward,nextState))
+		self.experience.append((state,action,reward,nextState))
 		self.timeStep = self.timeStep+1
 		#raise NotImplementedError
 
