@@ -20,7 +20,7 @@ class MonteCarloAgent(Agent):
 		self.currentState = []
 		self.G = 0
 
-		self.states = [(x,y) for x in range(6) for y in range(5)] # generates all states
+		self.states = [(x,y) for x in range(5) for y in range(6)] # generates all states
 		self.states.append("GOAL")
 		self.states.append("OUT_OF_BOUNDS")
 		self.states.append("OUT_OF_TIME")

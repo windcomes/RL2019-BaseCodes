@@ -16,7 +16,7 @@ class QLearningAgent(Agent):
 		self.epsilonPassed = epsilon
 		self.epsilon = 0
 
-		self.states = [(x,y) for x in range(6) for y in range(5)] # 生成所有的state
+		self.states = [(x,y) for x in range(5) for y in range(6)] # 生成所有的state
 		self.states.append("GOAL")
 		self.states.append("OUT_OF_BOUNDS")
 		self.states.append("OUT_OF_TIME")
