@@ -10,64 +10,88 @@ import numpy as np
 class SARSAAgent(Agent):
 	def __init__(self, learningRate, discountFactor, epsilon, initVals=0.0):
 		super(SARSAAgent, self).__init__()
+		self.numActions = len(self.possibleActions)
 		self.learningRatePassed = learningRate
 		self.discountFactor = discountFactor
 		self.epsilonPassed = epsilon
-		self.S = [(x,y) for x in range(6) for y in range(5)] # 生成所有的state
-		self.S.append("GOAL")
-		self.S.append("OUT_OF_BOUNDS")
-		self.curState = (0,0)
-		self.experience = 0
-		self.timeStep = 0
+		self.epsilon = 0
+
+		self.states = [(x,y) for x in range(6) for y in range(5)] # generates all states
+		self.states.append("GOAL")
+		self.states.append("OUT_OF_BOUNDS")
+		self.states.append("OUT_OF_TIME")
 		self.qValue = {}
-		self.curAction = 'None'
-		for state in self.S:
+		for state in self.states:
 			for action in self.possibleActions:
 				self.qValue[(state,action)] = initVals
 
+		self.currentState = []
+		self.currentExperience = []
+
 	def learn(self):
-        t = self.timeStep - 1
-		state_t = self.expeirence[t][0]
-		action_t = self.expeirence[t][1]
-		reward = self.experience[t][2]
-		stata_next = self.experience[t+1][0]
-		action_next = self.expeirence[t+1][1]
+		state_t = tuple(self.currentExperience[0][0])
+		action_t = self.currentExperience[1]
+		reward = self.currentExperience[2]
+		state_next = tuple(self.experience[3][0])
+		
+		# using the same policy which is epsilon-greedy menthod to choose the next action
+		qValue_next = []
+		for action in self.possibleActions:
+			qValue_next.append(self.qValue[(state_next,action)])
+		qValue_nextMax = max(qValue_next)
+		qValue_nextMaxIndexAll = [i for i,j in enumerate(qValue_next) if j==qValue_nextMax]
+		qValue_nextMaxIndex = random.choice(qValue_nextMaxIndexAll)
+
+		action_nextIndexAll = [i for i in range(self.possibleActions)]
+		action_nextIndexAll.remove(qValue_nextMaxIndex)
+		proNotMaxA = self.epsilon/self.amountActions
+		proisMaxA = 1 - self.epsilon + proNotMaxA
+		pro = random.random()
+		if pro <= proisMaxA:
+			action_next = self.possibleActions[qValue_nextMaxIndex]
+		else:
+			action_next = self.possibleActions[random.choice(action_nextIndexAll)]
+
 		qValue = self.qValue[(state_t,action_t)]
-		changeValue =  self.learningRate*(reward+self.discountFactor*(self.qValue[(stata_next,action_next)])-qValue)
+		changeValue =  self.learningRate*(reward+self.discountFactor*(self.qValue[(state_next,action_next)])-qValue)
 		self.qValue[(state_t,action_t)] =qValue + changeValue
 		return changeValue
 		raise NotImplementedError
 
 	def act(self):
-		q_value = []
+		# using  epsilon-greedy menthod 
+		curState = tuple(self.currentState[0])
+		qValue = []
 		for action in self.possibleActions:
-			q_value.append(self.qValue[(self.curState,action)])
-		q_valueMax = max(q_value)
-		q_valueMaxIndexAll = [i for i,j in enumerate(q_value) if j==q_valueMax]
-		q_valueMaxIndex = random.choice(q_valueMaxIndexAll)
+			qValue.append(self.qValue[(curState,action)])
+		qValueMax = max(qValue)
+		qValueMaxIndexAll = [i for i,j in enumerate(qValue) if j==qValueMax]
+		qValueMaxIndex = random.choice(qValueMaxIndexAll)
 		actionIndexAll = [i for i in range(self.possibleActions)]
-		actionIndexAll.remove(q_valueMaxIndex)
+		actionIndexAll.remove(qValueMaxIndex)
 		proNotMaxA = self.epsilon/self.amountActions
 		proisMaxA = 1 - self.epsilon + proNotMaxA
 		pro = random.random()
 		if pro <= proisMaxA:
-			self.curAction = self.possibleActions[q_valueMaxIndex]
+			choosedAction = self.possibleActions[qValueMaxIndex]
 		else:
-			self.curAction = self.possibleActions[random.choice(actionIndexAll)]
-		return self.curAction
+			choosedAction = self.possibleActions[random.choice(actionIndexAll)]
+		return choosedAction
 		raise NotImplementedError
 
 	def setState(self, state):
-		self.curState = state
-		raise NotImplementedError
+		self.currentState = state
+		#raise NotImplementedError
 
 	def setExperience(self, state, action, reward, status, nextState):
-		self.expeirence.append((self.timeStep,state,action,reward,nextState))
-		self.timeStep = self.timeStep+1
-		raise NotImplementedError
+		self.currentExperience = (state,action,reward,nextState)
+		#raise NotImplementedError
 
 	def computeHyperparameters(self, numTakenActions, episodeNumber):
-		return(self.learningRatePassed,self.epsilonPassed)
+		epsilonComputed = np.power(0.999921,episodeNumber)
+		#epsilonComputed = 0.2
+		learningRateComputed = np.power(0.999954,episodeNumber)
+		return(learningRateComputed,epsilonComputed)
 		raise NotImplementedError
 
 	def toStateRepresentation(self, state):
@@ -75,17 +99,16 @@ class SARSAAgent(Agent):
 		raise NotImplementedError
 
 	def reset(self):
-		self.experience = []
-		self.timeStep = 0
-		raise NotImplementedError
+		return None
+		#raise NotImplementedError
 
 	def setLearningRate(self, learningRate):
 		self.learningRate = learningRate
-		raise NotImplementedError
+		#raise NotImplementedError
 
 	def setEpsilon(self, epsilon):
 		self.epsilon = epsilon
-		raise NotImplementedError
+		#raise NotImplementedError
 
 if __name__ == '__main__':
 
