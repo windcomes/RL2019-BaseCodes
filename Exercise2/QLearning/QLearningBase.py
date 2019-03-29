@@ -32,7 +32,7 @@ class QLearningAgent(Agent):
 		state_t = tuple(self.currentExperience[0][0])
 		action_t = self.currentExperience[1]
 		reward = self.currentExperience[2]
-		state_next = tuple(self.experience[3][0])
+		state_next = tuple(self.currentExperience[3][0])
 		
 		qValue_next = []
 		for action in self.possibleActions:

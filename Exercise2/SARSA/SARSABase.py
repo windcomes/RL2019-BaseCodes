@@ -32,7 +32,7 @@ class SARSAAgent(Agent):
 		state_t = tuple(self.currentExperience[0][0])
 		action_t = self.currentExperience[1]
 		reward = self.currentExperience[2]
-		state_next = tuple(self.experience[3][0])
+		state_next = tuple(self.currentExperience[3][0])
 		
 		# using the same policy which is epsilon-greedy menthod to choose the next action
 		qValue_next = []
