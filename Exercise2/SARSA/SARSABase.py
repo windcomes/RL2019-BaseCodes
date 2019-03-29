@@ -26,9 +26,12 @@ class SARSAAgent(Agent):
 				self.qValue[(state,action)] = initVals
 
 		self.currentState = []
+		self.experience = []
+		self.timeSteps = 0
 		self.currentExperience = []
 
 	def learn(self):
+		self.currentExperience = self.experience[self.timeSteps-2]
 		state_t = tuple(self.currentExperience[0][0])
 		action_t = self.currentExperience[1]
 		reward = self.currentExperience[2]
@@ -86,14 +89,15 @@ class SARSAAgent(Agent):
 		#raise NotImplementedError
 
 	def setExperience(self, state, action, reward, status, nextState):
-		self.currentExperience = (state,action,reward,nextState)
+		self.experience.append(state,action,reward,nextState)
+		self.timeSteps = self.timeSteps + 1
 		#raise NotImplementedError
 
 	def computeHyperparameters(self, numTakenActions, episodeNumber):
-		epsilonComputed = np.power(0.999921,episodeNumber)
+		epsilonComputed = np.power(0.999,episodeNumber)
 		#epsilonComputed = 0.2
-		learningRateComputed = np.power(0.999954,episodeNumber)
-		return(learningRateComputed,epsilonComputed)
+		learningRateComputed = np.power(0.99954,episodeNumber)
+		return (learningRateComputed,epsilonComputed)
 		raise NotImplementedError
 
 	def toStateRepresentation(self, state):
@@ -101,7 +105,8 @@ class SARSAAgent(Agent):
 		raise NotImplementedError
 
 	def reset(self):
-		return None
+		self.experience = []
+		self.timeSteps = 0
 		#raise NotImplementedError
 
 	def setLearningRate(self, learningRate):
