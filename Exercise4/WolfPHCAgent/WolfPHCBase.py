@@ -160,7 +160,7 @@ class WolfPHCAgent(Agent):
 	def computeHyperparameters(self, numTakenActions, episodeNumber):
 		#epsilonComputed = 0.2
 		learningRateComputed = np.power(0.999954,episodeNumber)
-		winDeltaComputed = 1/(5000+numTakenActions)
+		winDeltaComputed = 1/(1000+numTakenActions)
 		loseDeltaComputed = 2*winDeltaComputed
 		return(loseDeltaComputed,winDeltaComputed,learningRateComputed)
 		raise NotImplementedError

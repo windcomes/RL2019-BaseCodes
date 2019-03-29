@@ -75,7 +75,7 @@ class IndependentQLearningAgent(Agent):
 		raise NotImplementedError
 
 	def toStateRepresentation(self, state):
-		return state #返回的state是一个list, 1st entry is own location, 2nd entry is opponent location
+		return state #a list, 1st entry is own location, 2nd entry is opponent location
 		raise NotImplementedError
 
 	def setState(self, state):
@@ -117,8 +117,8 @@ if __name__ == '__main__':
 
 	numEpisodes = args.numEpisodes
 	numTakenActions = 0
-	totalReward_record = []
-	totalTimestep = []
+	#totalReward_record = []
+	#totalTimestep = []
 	for episode in range(numEpisodes):	
 		status = ["IN_GAME","IN_GAME","IN_GAME"]
 		observation = MARLEnv.reset()
@@ -134,26 +134,26 @@ if __name__ == '__main__':
 			stateCopies = []
 			changes = []
 			for agentIdx in range(args.numAgents):
-				obsCopy = deepcopy(observation[agentIdx]) # 从环境中获取每个agent的state 每个agent接收到的state一样的
-				stateCopies.append(obsCopy) #将这两个agent的state保存下来
-				agents[agentIdx].setState(agent.toStateRepresentation(obsCopy)) #将获取的state传给相应的agent
+				obsCopy = deepcopy(observation[agentIdx]) 
+				stateCopies.append(obsCopy) 
+				agents[agentIdx].setState(agent.toStateRepresentation(obsCopy))
 				actions.append(agents[agentIdx].act())
 			numTakenActions += 1
-			nextObservation, reward, done, status = MARLEnv.step(actions) # 这里返回的每个东西都是一个list，每个list中分别记录了两个agent的相应信息
+			nextObservation, reward, done, status = MARLEnv.step(actions)
 
 			for agentIdx in range(args.numAgents):
 				agents[agentIdx].setExperience(agent.toStateRepresentation(stateCopies[agentIdx]), actions[agentIdx], reward[agentIdx], 
 					status[agentIdx], agent.toStateRepresentation(nextObservation[agentIdx]))
 				agents[agentIdx].learn()
-			totalReward = totalReward + reward[0]
-			timeSteps = timeSteps + 1
+			#totalReward = totalReward + reward[0]
+			#timeSteps = timeSteps + 1
 			observation = nextObservation
-		totalTimestep.append(timeSteps)
-		totalReward_record.append(totalReward)
-		if episode % 1000 == 0:
-			print(episode)
-			print(np.mean(totalReward_record))
-			print(np.mean(totalTimestep))
-			print(np.max(totalTimestep))
-			totalReward_record = []
-			totalTimestep = []
+		#totalTimestep.append(timeSteps)
+		#totalReward_record.append(totalReward)
+		#if episode % 1000 == 0:
+			#print(episode)
+			#print(np.mean(totalReward_record))
+			#print(np.mean(totalTimestep))
+			#print(np.max(totalTimestep))
+			#totalReward_record = []
+			#totalTimestep = []

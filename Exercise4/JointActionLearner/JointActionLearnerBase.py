@@ -21,7 +21,7 @@ class JointQLearningAgent(Agent):
 		self.epsilon = 0.0
 		self.numTeammates = numTeammates # now numTeammates is 1
 
-		self.states = [(x,y) for x in range(5) for y in range(5)] # 生成所有的state
+		self.states = [(x,y) for x in range(5) for y in range(5)] 
 		self.specialStates = []
 		self.specialStates.append("GOAL")
 		self.specialStates.append("OUT_OF_BOUNDS")
