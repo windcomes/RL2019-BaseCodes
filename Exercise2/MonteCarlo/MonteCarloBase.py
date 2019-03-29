@@ -40,10 +40,10 @@ class MonteCarloAgent(Agent):
 			for tt in range(0,t):
 				if (state_t,action_t)==(tuple(self.experience[tt][0][0]),self.experience[tt][1]):
 					break
-			if tt == t: # It means the state-action pair occurs for the first time
-				self.returns[(state_t,action_t)].append(self.G)
-				self.qValue[(state_t,action_t)] = np.mean(self.returns[(state_t,action_t)])
-				qUpdatedInEpisode.append(self.qValue[(state_t,action_t)])
+				if tt == t: # It means the state-action pair occurs for the first time
+					self.returns[(state_t,action_t)].append(self.G)
+					self.qValue[(state_t,action_t)] = np.mean(self.returns[(state_t,action_t)])
+					qUpdatedInEpisode.append(self.qValue[(state_t,action_t)])
 		qUpdatedInEpisode.reverse()
 		return (self.qValue,qUpdatedInEpisode)
 		raise NotImplementedError
